@@ -36,8 +36,6 @@ public class UserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 设置字符编码集为UTF-8，保证与环境的字符编码一致，避免乱码。
-		request.setCharacterEncoding("utf-8");
 		// 获取servlet路径  为uri/项目名/*中的/*部分。这里为/*.do
 		String servletPath = request.getServletPath();
 		System.out.println(servletPath);

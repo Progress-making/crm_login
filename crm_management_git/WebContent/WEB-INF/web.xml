@@ -4,4 +4,21 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>com.xiaowen.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<description>设置编码字符集为utf-8</description>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<!-- 过滤所有请求 -->
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+		
 </web-app>
