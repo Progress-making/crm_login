@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.xiaowen.exception.LoginException;
+import com.xiaowen.exception.ParamException;
 import com.xiaowen.pojo.User;
 import com.xiaowen.service.UserService;
 import com.xiaowen.service.impl.UserServiceImpl;
@@ -98,6 +99,9 @@ public class UserServlet extends HttpServlet {
 			// 跳转至主页面
 			req.setAttribute("user", user);
 			req.getRequestDispatcher("/WEB-INF/views/main.jsp").forward(req, resp);
+		} catch (ParamException e){
+			req.setAttribute("msg", e.getMsg());
+			req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
 		} catch (LoginException e) {
 //			e.getMsg();
 //			resp.sendRedirect(req.getServletContext().getContextPath() + "/error.jsp");
