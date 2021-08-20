@@ -42,4 +42,14 @@ public class UserDaoImplTest {
 		System.out.println(user.toString());
 		Assert.assertNotNull("登录失败！", user);
 	}
+	
+	@Test
+	public void testInsertUserSingle() throws SQLException {
+		User user = new User();
+		user.setUserName("篮球之神");
+		user.setUserPwd("qd123456");
+		user.setTrueName("迈克尔·乔丹");
+		int result = userDao.insUserSingle(user);
+		Assert.assertTrue("添加失败", result > 0);
+	}
 }

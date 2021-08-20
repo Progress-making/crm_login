@@ -96,7 +96,7 @@
 					</tr>
 					<tr>
 						<td><input type="checkbox" name="lockMe" />记住我</td>
-						<td><span>没有账号？请</span><a href="#">注册</a></td>
+						<td><span>没有账号？请</span><a href="register.jsp">注册</a></td>
 					</tr>
 					<tr>
 						<td><input type="submit" value="提交" /></td>

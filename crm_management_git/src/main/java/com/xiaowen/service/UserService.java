@@ -1,6 +1,8 @@
 package com.xiaowen.service;
 
 import com.xiaowen.exception.LoginException;
+import com.xiaowen.exception.ParamException;
+import com.xiaowen.exception.SystemException;
 import com.xiaowen.pojo.User;
 
 public interface UserService {
@@ -17,4 +19,8 @@ public interface UserService {
 	 * @throws LoginException
 	 */
 	public User login(String userName, String userPwd) throws LoginException;
+	
+	public int register(User user, String confirmPwd) throws ParamException, SystemException;
+	
+	public User getUserByUsername(String userName) throws ParamException, SystemException;
 }

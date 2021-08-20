@@ -70,4 +70,54 @@ public class UserDaoImpl implements UserDao {
 		return null;
 	}
 
+	@Override
+	public int insUserSingle(User user) {
+		Connection conn = DBUtils.getConnection();
+		String sql = "insert into t_user values(default, ?, ?, ?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getUserName());
+			pstmt.setString(2, user.getUserPwd());
+			pstmt.setString(3, user.getTrueName());
+			int result = pstmt.executeUpdate();
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtils.closeResource(conn, pstmt, null);
+		}
+		return 0;
+	}
+
+	@Override
+	public User selUserByUsername(String userName) {
+		Connection conn = DBUtils.getConnection();
+		String sql = "select * from t_user where user_name = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userName);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setUserName(rs.getString("user_name"));
+				user.setUserPwd(rs.getString("user_pwd"));
+				user.setTrueName(rs.getString("true_name"));
+				return user;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtils.closeResource(conn, pstmt, rs);
+		}
+		return null;
+	}
+
 }
