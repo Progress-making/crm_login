@@ -8,11 +8,16 @@
 <title>Crm 后台登录界面</title>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery.cookie.js"></script>
 <script type="text/javascript">
 	$(function() {
 		var $textInput = $("input:text:eq(0)");
 		var $passwordInput = $("input:password:eq(0)");
 		var $msgDiv = $("#null_form_tip");
+		
+		$textInput.val($.cookie("userName"));
+		$passwordInput.val($.cookie("userPwd"));
+		$("input[type='checkbox']").attr("checked",$.cookie("isChecked"));
 		
 		$textInput.on({
 			"change" : function() {
@@ -45,8 +50,8 @@
 			}
 		});
 
-
 		$("input:submit").click(function() {
+			
 			if ($textInput.val() == null || $textInput.val().trim() == ""){
 				$msgDiv.css({
 					"display" : "block"
@@ -58,6 +63,15 @@
 				}).html("请输入密码");
 				return false;
 			} else {
+				if ($("input[type='checkbox']").is(":checked")) {
+					$.cookie("isChecked", "checked", {expires : 7 });
+					$.cookie("userName", $textInput.val(),{expires : 7});
+					$.cookie("userPwd", $passwordInput.val(),{expires : 7});
+				} else {
+					$.cookie("isChecked", null, {expires : -1 });
+					$.cookie("userName", null, {expires : -1 });
+					$.cookie("userPwd", null, {expires : -1 });
+				}
 				return true;
 			}
 		});

@@ -1,5 +1,8 @@
 package com.xiaowen.service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.xiaowen.exception.LoginException;
 import com.xiaowen.exception.ParamException;
 import com.xiaowen.exception.SystemException;
@@ -18,7 +21,7 @@ public interface UserService {
 	 * @return
 	 * @throws LoginException
 	 */
-	public User login(String userName, String userPwd) throws LoginException;
+	public User login(String userName, String userPwd, HttpServletResponse resp) throws LoginException;
 	
 	public int register(User user, String confirmPwd) throws ParamException, SystemException;
 	

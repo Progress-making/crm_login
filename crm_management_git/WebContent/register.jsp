@@ -44,22 +44,7 @@
 						}
 						
 					},
-					/* error:function(xmlRequest, errorMsg){
-						if (errorMsg == null) {
-							$(this).next().css("color","green").html("√");
-							$("tbody tr:eq(1)").find("span").empty();
-							usernameFlag = false;
-						}
-					} */
 				});
-				
-				/* if($(this).val == null || $(this).val() == "") {
-					$(this).next().css("color","red").html("×");
-					$("tbody tr:eq(1)").find("span").css("color","red").html("用户名为必填项");
-					usernameFlag = true;
-				} else {
-					$("tbody tr:eq(1)").find("span").empty();
-				} */
 			}
 		});
 		
@@ -116,7 +101,7 @@
 				truenameFlag = true;
 			} else {
 				$(this).next().css("color","green").html("√");
-				$("tbody tr:eq(5)").find("span").empty();
+				$("tbody tr:eq(7)").find("span").empty();
 				truenameFlag = false;
 			}
 		});

@@ -38,8 +38,10 @@ public class UserDaoImplTest {
 	 */
 	@Test
 	public void testSelUserByUsernameAndPwd() throws SQLException {
-		User user = userDao.selUserByUsernameAndPwd("admin", "admin001");
-		System.out.println(user.toString());
+		User user = userDao.selUserByUsernameAndPwd("黑曼巴", "kb123456");
+		if (user != null) {
+			System.out.println(user.toString());
+		}
 		Assert.assertNotNull("登录失败！", user);
 	}
 	

@@ -122,7 +122,7 @@ public class UserServlet extends HttpServlet {
 		
 		User user = new User();
 		try {
-			user = userService.login(userName, userPwd);
+			user = userService.login(userName, userPwd, resp);
 			System.out.println(user);
 			// 跳转至主页面
 			req.setAttribute("user", user);
