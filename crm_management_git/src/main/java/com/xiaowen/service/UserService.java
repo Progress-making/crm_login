@@ -26,4 +26,6 @@ public interface UserService {
 	public int register(User user, String confirmPwd) throws ParamException, SystemException;
 	
 	public User getUserByUsername(String userName) throws ParamException, SystemException;
+	
+	public User getUserByIdFromCookie(String idStr) throws ParamException, SystemException;
 }

@@ -93,9 +93,18 @@ public class UserServlet extends HttpServlet {
 	 */
 	private void query(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String userName = req.getParameter("userName");
-		System.out.println(userName);
-		User user = userService.getUserByUsername(userName);
-		System.out.println(user);
+		String idStr = req.getParameter("userId");
+		User user = new User();
+		if (userName != null) {
+			System.out.println(userName);
+			user = userService.getUserByUsername(userName);
+			System.out.println(user);
+		}
+		if (idStr != null) {
+			System.out.println(idStr);
+			user = userService.getUserByIdFromCookie(idStr);
+			System.out.println(user);
+		}
 		resp.setContentType("application/json; charset=utf-8");
 		ObjectMapper mapper = new ObjectMapper();
 		String userJson = mapper.writeValueAsString(user);

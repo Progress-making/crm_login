@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 		AssertUtils.isTrue(StringUtils.isBlank(userName), "请输入用户名");
 		AssertUtils.isTrue(StringUtils.isBlank(userPwd), "请输入密码");
 		
-		User user = userDao.selUserByUsernameAndPwd(userName, userPwd);
+		User user = userDao.selUserByUsernameAndPwd(userName, MD5Util.md5Encrypt(userPwd));
 		AssertUtils.isLoginFail(user == null, "登录失败！原因可能如下：1.用户不存在 2.系统错误");
 		
 		/*
@@ -56,6 +56,12 @@ public class UserServiceImpl implements UserService {
 		// 当参数userName 为null 或""时，返回user为null
 		User user = userDao.selUserByUsername(userName);
 		return user;
+	}
+
+	@Override
+	public User getUserByIdFromCookie(String idStr) throws ParamException, SystemException, NumberFormatException {
+		
+		return userDao.selUserById(Integer.parseInt(BASE64Utils.decryptBASE64(idStr)));
 	}
 
 }
