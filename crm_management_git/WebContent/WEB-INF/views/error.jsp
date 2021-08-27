@@ -7,6 +7,9 @@
 <title>ERROR PAGE</title>
 </head>
 <body>
-	<span>${msg }</span>
+
+	<p><span>操作失败!</span></p>
+	<p><span>错误码为：</span><span>${code }</span></p>
+	<p><span>错误信息为：</span><span>${msg }</span></p>
 </body>
 </html>

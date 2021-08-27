@@ -6,28 +6,64 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Crm 后台主页面</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/common.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery.cookie.js"></script>
 <script type="text/javascript">
 	$(function(){
-		/* $("span").html($.cookie("name")); */
 		$.ajax({
-			url:"${pageContext.request.contextPath }/user/query.do",
-			data:{
-				userId:$.cookie("userId")
-			},
+			url:"${pageContext.request.contextPath }/queryByCookie.do",
 			type:"post",
 			async:true,
 			dataType :"json",
 			success:function(data){
-				alert(data.userName);
-				$("span").html(data.userName);
+				if (data.code == 300) {
+					alert(data.msg);
+					window.location.href = "index.jsp";
+					return;
+				}
+				if (data.code == 500) {
+					window.location.href = "${pageContext.request.contextPath }/toErrorPage.do?msg=" + data.msg + "&code=" + data.code;
+					return;
+				}
+				$("span").html(data.result.userName);
 			}
+		});
+		
+		$("button").on({
+			"mouseover":function(){
+				$(this).css({"color":"red", "background-color":"lightblue"});
+			},
+			"mouseout":function(){
+				$(this).removeAttr("style");
+			}
+		});
+		
+		// 安全退出 按钮被点击后 清除客户端用户的cookie信息，并跳转至首页面
+		$("button:eq(2)").click(function(){
+			$.cookie("userId", null, {expires : -1, path : "/"});
+			// 直接退回首页 默认是/index.jsp
+			window.location.href = "${pageContext.request.contextPath}/index.jsp";
+		});
+		
+		$("button:eq(1)").click(function(){
+			// 注意：a标签中的href和window.location.href都是重定向，都不能访问WEB-INF下的页面
+			// 可通过指定action在Servlet中进行转发的方式解决
+			window.location.href = "updatePwd.do";
+		});
+		
+		$("button:eq(0)").click(function(){
+			window.location.href = "toEditPage.do";
 		});
 	});
 </script>
 </head>
 <body>
 	<strong>欢迎：</strong><span></span>
+	<ul>
+		<li><button>编辑资料</button></li>
+		<li><button>修改密码</button></li>
+		<li><button>安全退出</button></li>
+	</ul>
 </body>
 </html>

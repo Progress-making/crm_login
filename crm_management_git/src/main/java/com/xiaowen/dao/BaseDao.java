@@ -61,7 +61,7 @@ public abstract class BaseDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBUtils.closeResource(conn, pstmt, rs);
+			DBUtils.closeResource(null, pstmt, rs);
 		}
 		return null;
 	}
@@ -94,7 +94,7 @@ public abstract class BaseDao {
 			while (rs.next()) {
 				T t = clazz.newInstance();
 				for (int i = 0; i < columnCount; i++) {
-					String columnLabel = metaData.getColumnLabel(i);
+					String columnLabel = metaData.getColumnLabel(i + 1);
 					Object columnValue = rs.getObject(columnLabel);
 					Field field = clazz.getDeclaredField(columnLabel);
 					field.setAccessible(true);
@@ -117,7 +117,7 @@ public abstract class BaseDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBUtils.closeResource(conn, pstmt, rs);
+			DBUtils.closeResource(null, pstmt, rs);
 		}
 		
 		return list;
@@ -147,7 +147,8 @@ public abstract class BaseDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBUtils.closeResource(conn, pstmt, null);
+			// 考虑到事务的情况需要保证同一个连接！所以不能直接关闭连接！
+			DBUtils.closeResource(null, pstmt, null);
 		}
 		return 0;
 	}

@@ -2,7 +2,6 @@ package com.xiaowen.util;
 
 import com.xiaowen.exception.LoginException;
 import com.xiaowen.exception.ParamException;
-import com.xiaowen.exception.SystemException;
 
 /**
  * 封装登录异常以及参数异常的抛出异常信息的方法
@@ -33,17 +32,4 @@ public class AssertUtils {
 		}
 	}
 	
-	/**
-	 * 确认为系统错误并抛出
-	 * 
-	 * @Description
-	 * @author xiaowen
-	 * @date 2021年8月18日下午9:51:26
-	 * @param flag
-	 */
-	public static void isSystemError(boolean flag) {
-		if (flag) {
-			throw new SystemException();
-		}
-	}
 }

@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Crm 后台注册界面</title>
-<link type="text/css" href="/js/common.js">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/common.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -15,7 +15,7 @@
 		$("input:text:eq(0)").on({
 			"blur":function(){
 				$.ajax({
-					url:"${pageContext.request.contextPath }/user/query.do",
+					url:"${pageContext.request.contextPath }/queryByName.do",
 					data:{
 						"userName":$(this).val()
 					},
@@ -24,23 +24,28 @@
 					dataType :"json",
 					success:function(data){
 						/* alert(data); */
-						if (data == null) {
-							/* alert("返回值为null"); */
-							if($("input:text:eq(0)").val() == null || $("input:text:eq(0)").val().trim() == "") {
-								/* alert("当前参数为null"); */
-								$("input:text:eq(0)").next().css("color","red").html("×");
-								$("tbody tr:eq(1)").find("span").css("color","red").html("用户名为必填项");
-								usernameFlag = true;
-							} else {
+						// 这里返回的data是ResultInfo的实例对象
+						/**
+						 * 如果返回的code值为300，表明用户名参数为空
+						 * 如果返回的code值为500，表明系统内部错误
+						**/
+						if (data.code == 300) {
+							$("input:text:eq(0)").next().css("color","red").html("×");
+							$("tbody tr:eq(1)").find("span").css("color","red").html(data.msg);
+							usernameFlag = true;
+						} else if (data.code == 500){
+							// 跳转至error.jsp界面
+							window.location.href = "${pageContext.request.contextPath }/toErrorPage.do?msg=" + data.msg + "&code=" + data.code;
+						} else {
+							if (data.result == null) {
 								$("input:text:eq(0)").next().css("color","green").html("√");
 								$("tbody tr:eq(1)").find("span").empty();
 								usernameFlag = false;
+							} else {
+								$("input:text:eq(0)").next().css("color","red").html("×");
+								$("tbody tr:eq(1)").find("span").css("color","red").html("此用户已存在");
+								usernameFlag = true;
 							}
-							
-						} else {
-							$("input:text:eq(0)").next().css("color","red").html("×");
-							$("tbody tr:eq(1)").find("span").css("color","red").html("此用户已存在");
-							usernameFlag = true;
 						}
 						
 					},
@@ -116,7 +121,7 @@
 </script>
 </head>
 <body>
-	<form action="user/add.do" method="post" >
+	<form action="add.do" method="post" >
 		<table>
 			<thead><tr><td><strong>Register</strong></td><td align="right"><span>已有账号？</span><a href="index.jsp">点此登录</a></td></tr></thead>
 			<tbody>

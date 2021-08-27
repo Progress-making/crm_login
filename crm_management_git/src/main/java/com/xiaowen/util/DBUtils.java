@@ -100,4 +100,21 @@ public class DBUtils {
 		}
 	}
 	
+	/**
+	 * 涉及到事务的关闭连接
+	 * 
+	 * @Description
+	 * @author xiaowen
+	 * @date 2021年8月26日下午2:04:37
+	 * @param conn
+	 */
+	public static void closeConn(Connection conn) {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

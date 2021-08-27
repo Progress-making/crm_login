@@ -7,7 +7,7 @@ public class LoginException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = -8167384919494484570L;
 
-	private int code = 300;
+	private int code = 400;
 	private String msg = "登录失败";
 	
 	public LoginException() {

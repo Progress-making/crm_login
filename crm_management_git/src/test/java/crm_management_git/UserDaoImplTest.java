@@ -1,5 +1,6 @@
 package crm_management_git;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.junit.Assert;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import com.xiaowen.dao.UserDao;
 import com.xiaowen.dao.impl.UserDaoImpl;
 import com.xiaowen.pojo.User;
+import com.xiaowen.util.DBUtils;
 
 public class UserDaoImplTest {
 
@@ -23,7 +25,9 @@ public class UserDaoImplTest {
 	 */
 	@Test
 	public void testSelUserById() throws SQLException {
-		User user = userDao.selUserById(1);
+		Connection conn = DBUtils.getConnection();
+		User user = userDao.selUserById(conn, 1);
+		DBUtils.closeConn(conn);
 		System.out.println(user.toString());
 		Assert.assertNotNull("查询失败！", user);
 	}
@@ -38,7 +42,9 @@ public class UserDaoImplTest {
 	 */
 	@Test
 	public void testSelUserByUsernameAndPwd() throws SQLException {
-		User user = userDao.selUserByUsernameAndPwd("黑曼巴", "kb123456");
+		Connection conn = DBUtils.getConnection();
+		User user = userDao.selUserByUsernameAndPwd(conn, "黑曼巴", "kb123456");
+		DBUtils.closeConn(conn);
 		if (user != null) {
 			System.out.println(user.toString());
 		}
@@ -51,7 +57,9 @@ public class UserDaoImplTest {
 		user.setUserName("篮球之神");
 		user.setUserPwd("qd123456");
 		user.setTrueName("迈克尔·乔丹");
-		int result = userDao.insUserSingle(user);
+		Connection conn = DBUtils.getConnection();
+		int result = userDao.insUserSingle(conn, user);
+		DBUtils.closeConn(conn);
 		Assert.assertTrue("添加失败", result > 0);
 	}
 }

@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Crm 后台登录界面</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/common.css">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery.cookie.js"></script>
@@ -92,7 +93,7 @@
 <body>
 	<div id="null_form_tip"></div>
 	<div>
-		<form action="user/login.do" method="post">
+		<form action="login.do" method="post">
 			<table>
 				<thead>
 					<tr>
