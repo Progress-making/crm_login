@@ -21,7 +21,7 @@
 				success:function(data){
 					alert(data.msg);
 					if (data.code == 200) {
-						window.location.href = "${pageContext.request.contextPath }/main.do";
+						window.top.location.href = "${pageContext.request.contextPath }/main.do";
 					}
 				}
 			});

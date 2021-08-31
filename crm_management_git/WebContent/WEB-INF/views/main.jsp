@@ -49,21 +49,59 @@
 		$("button:eq(1)").click(function(){
 			// 注意：a标签中的href和window.location.href都是重定向，都不能访问WEB-INF下的页面
 			// 可通过指定action在Servlet中进行转发的方式解决
-			window.location.href = "updatePwd.do";
+			$("#iframe_1").attr("src", "updatePwd.do");
+			//window.location.href = "updatePwd.do";
 		});
 		
 		$("button:eq(0)").click(function(){
-			window.location.href = "toEditPage.do";
+			$("#iframe_1").attr("src", "toEditPage.do");
+			//$(window.frames["iframe_1"]).attr("src", "toEditPage.do");
+			//window.location.href = "toEditPage.do";
 		});
 	});
 </script>
+<style type="text/css">
+#div_top{
+	width:100%;
+	height:10%;
+}
+
+#div_mid{
+	width:100%;
+	height:90%;
+	position:relative;
+	border:1px solid green;
+	
+}
+
+#div_mid ul {
+	width:20%;
+	height:100%;
+	border:1px solid red;
+	margin:0;
+	position:relative;
+	top:0;
+}
+
+#div_mid iframe {
+	width:75%;
+	height:100%;
+	position:absolute;
+	top:0;
+	right:0;
+}
+</style>
 </head>
 <body>
-	<strong>欢迎：</strong><span></span>
-	<ul>
-		<li><button>编辑资料</button></li>
-		<li><button>修改密码</button></li>
-		<li><button>安全退出</button></li>
-	</ul>
+	<div id="div_top"><strong>欢迎：</strong><span></span></div>
+	<div id="div_mid">
+		<ul>
+			<li><button>编辑资料</button></li>
+			<li><button>修改密码</button></li>
+			<li><button>安全退出</button></li>
+		</ul>
+		<iframe id="iframe_1" name="ifram_show" frameborder="1"  title="inner page" scrolling="no" ></iframe>
+	</div>
+	
 </body>
 </html>

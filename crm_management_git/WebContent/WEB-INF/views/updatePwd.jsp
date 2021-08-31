@@ -25,9 +25,10 @@
 				success:function(data){
 					alert(data.msg);
 					if (data.code == 200) {
-						window.location.href = "${pageContext.request.contextPath }/index.jsp";
+						$.cookie("userId", null, {expires:-1, path:"/"});
+						window.top.location.href = "${pageContext.request.contextPath }/index.jsp";
 					} else {
-						window.location.href = "${pageContext.request.contextPath }/toErrorPage.do?msg=" + data.msg + "&code=" + data.code;
+						window.top.location.href = "${pageContext.request.contextPath }/toErrorPage.do?msg=" + data.msg + "&code=" + data.code;
 					}
 					
 				}
