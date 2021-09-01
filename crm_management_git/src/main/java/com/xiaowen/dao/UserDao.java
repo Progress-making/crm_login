@@ -42,7 +42,7 @@ public interface UserDao {
 	 * @param user
 	 * @return
 	 */
-	public int updUserPwd(Connection conn, User user, String newPwd);
+	public int updUserPwd(Connection conn, User user);
 	
 	/**
 	 * 根据用户id修改用户基本资料
@@ -55,7 +55,7 @@ public interface UserDao {
 	 * @param id
 	 * @return
 	 */
-	public int updUserById(Connection conn, User user, int id);
+	public int updUserById(Connection conn, User user);
 	
 	/**
 	 * 查询 除指定用户名之外的所有用户并返回

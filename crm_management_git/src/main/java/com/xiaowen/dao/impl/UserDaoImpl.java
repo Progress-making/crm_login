@@ -34,15 +34,15 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public int updUserPwd(Connection conn, User user, String newPwd) {
+	public int updUserPwd(Connection conn, User user) {
 		String sql = "update t_user set user_pwd = ? where id = ?";
-		return update(conn, sql, newPwd, user.getId());
+		return update(conn, sql, user.getUserPwd(), user.getId());
 	}
 
 	@Override
-	public int updUserById(Connection conn, User user, int id) {
+	public int updUserById(Connection conn, User user) {
 		String sql = "update t_user set user_name = ?, true_name = ? where id = ?";
-		return update(conn, sql, user.getUserName(), user.getTrueName(), id);
+		return update(conn, sql, user.getUserName(), user.getTrueName(), user.getId());
 	}
 
 	@Override

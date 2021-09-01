@@ -42,7 +42,7 @@ public interface UserService {
 	 * @throws ParamException
 	 * @throws LoginException
 	 */
-	public int updatUserPwd(User user, String oldPwd, String newPwd, String confirmPwd) throws ParamException, LoginException;
+	public int updatUserPwd(HttpServletRequest req, String oldPwd, String newPwd, String confirmPwd) throws ParamException, LoginException;
 	
 	/**
 	 * 修改用户基本信息
@@ -53,6 +53,6 @@ public interface UserService {
 	 * @param user
 	 * @return
 	 */
-	public int updateUserInfo(User user, String userName, String trueName) throws ParamException;
+	public int updateUserInfo(HttpServletRequest req, String userName, String trueName) throws ParamException;
 	
 }

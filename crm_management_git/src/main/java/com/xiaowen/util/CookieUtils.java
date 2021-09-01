@@ -26,6 +26,9 @@ public class CookieUtils {
 	 * @return
 	 */
 	public static Cookie getCookie(HttpServletRequest req, String cookieName) {
+		if (req == null) {
+			return null;
+		}
 		Cookie[] cookies = req.getCookies();
 		if (cookies == null || cookies.length < 1) {
 			return null;
@@ -50,6 +53,9 @@ public class CookieUtils {
 	 * @param dayAliveTime
 	 */
 	public static void setCookie(HttpServletResponse resp, String cookieName, String cookieValue, int dayAliveTime) {
+		if (resp == null) {
+			return;
+		}
 		Cookie cookie = new Cookie(cookieName, cookieValue);
 		cookie.setMaxAge(dayAliveTime * 60 * 60 * 24);
 		cookie.setPath("/");

@@ -279,8 +279,8 @@ public class UserServlet extends HttpServlet {
 		String confirmPwd = req.getParameter("confirmPwd");
 		ResultInfo result = new ResultInfo();
 		try {
-			User user = userService.getUserByIdFromCookie(req);
-			userService.updatUserPwd(user, oldPwd, newPwd, confirmPwd);
+//			User user = userService.getUserByIdFromCookie(req);
+			userService.updatUserPwd(req, oldPwd, newPwd, confirmPwd);
 			result.setCode(200);
 			result.setMsg("操作成功！");
 		} catch (ParamException e) {
@@ -354,8 +354,7 @@ public class UserServlet extends HttpServlet {
 		System.out.println(userName + "-----" + trueName);
 		ResultInfo result = new ResultInfo(); 
 		try {
-			User user = userService.getUserByIdFromCookie(req);
-			userService.updateUserInfo(user, userName, trueName);
+			userService.updateUserInfo(req, userName, trueName);
 			result.setCode(200);
 			result.setMsg("操作成功！");
 		} catch (LoginException e) {

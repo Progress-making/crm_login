@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- namespace理解成实现类的全路径名：包名+类名 -->
+ <mapper namespace="com.xiaowen.mapper.UserMapper">
+    <!-- 根据用户id查询用户信息 -->
+ 	<select id="selUserById" parameterType="int" resultType="User">
+ 		select id,user_name userName, user_pwd userPwd, true_name trueName 
+ 		from t_user
+ 		where id = #{id}
+ 	</select>
+ 	
+ 	<!-- 用于用户登录 -->
+ 	<select id="selUserByUsernameAndPwd" parameterType="map" resultType="User">
+ 		select id, user_name userName, user_pwd userPwd, true_name trueName
+ 		from t_user
+ 		where user_name = #{userName} and user_pwd = #{password}
+ 	</select>
+ 	
+ 	<!-- 根据用户名查询用户 -->
+ 	<select id="selUserByUsername" parameterType="string" resultType="User">
+ 		select id, user_name userName, user_pwd userPwd, true_name trueName
+ 		from t_user
+ 		where user_name = #{userName}
+ 	</select>
+ 	
+ 	<!-- 新增用户 -->
+ 	<insert id="insUserSingle" parameterType="User">
+ 		insert into t_user
+ 		values(default, #{userName}, #{userPwd}, #{trueName});
+ 	</insert>
+ 	
+ 	<!-- 修改用户密码 -->
+ 	<update id="updUserPwd" parameterType="user">
+ 		update t_user
+ 		set user_pwd = #{userPwd}
+ 		where id = #{id}
+ 	</update>
+ 	
+ 	<select id="selMultiUsersExceptName" parameterType="string" resultType="user">
+ 		select id, user_name userName, user_pwd userPwd, true_name trueName
+ 		from t_user
+ 		where user_name != #{oldName}
+ 	</select>
+ 	
+ 	<update id="updUserById" parameterType="user">
+ 		update t_user
+ 		set user_name = #{userName},user_pwd = #{userPwd},true_name = #{trueName}
+ 		where id = #{id}
+ 	</update>
+ </mapper>
