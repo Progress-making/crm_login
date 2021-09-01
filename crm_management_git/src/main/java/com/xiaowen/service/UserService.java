@@ -1,5 +1,7 @@
 package com.xiaowen.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +19,7 @@ public interface UserService {
 	 * @date 2021年8月16日下午4:44:51
 	 * @param userName
 	 * @param userPwd
+	 * @param resp
 	 * @return
 	 * @throws LoginException
 	 */
@@ -34,7 +37,7 @@ public interface UserService {
 	 * @Description
 	 * @author xiaowen
 	 * @date 2021年8月26日下午12:22:36
-	 * @param user
+	 * @param req
 	 * @param oldPwd
 	 * @param newPwd
 	 * @param confirmPwd
@@ -50,9 +53,21 @@ public interface UserService {
 	 * @Description
 	 * @author xiaowen
 	 * @date 2021年8月26日下午4:42:28
-	 * @param user
+	 * @param req
+	 * @param userName
+	 * @param trueName
 	 * @return
+	 * @throws ParamException
 	 */
 	public int updateUserInfo(HttpServletRequest req, String userName, String trueName) throws ParamException;
-	
+
+	/**
+	 * 查询所有用户信息
+	 * 
+	 * @Description
+	 * @author xiaowen
+	 * @date 2021年9月1日下午3:08:09
+	 * @return
+	 */
+	public List<User> getAllUsers();
 }

@@ -12,7 +12,7 @@
  	</select>
  	
  	<!-- 用于用户登录 -->
- 	<select id="selUserByUsernameAndPwd" parameterType="map" resultType="User">
+ 	<select id="selUserByUsernameAndPwd" resultType="User">
  		select id, user_name userName, user_pwd userPwd, true_name trueName
  		from t_user
  		where user_name = #{userName} and user_pwd = #{password}
@@ -23,6 +23,12 @@
  		select id, user_name userName, user_pwd userPwd, true_name trueName
  		from t_user
  		where user_name = #{userName}
+ 	</select>
+ 	
+ 	<!-- 查询所有用户信息 -->
+ 	<select id="selAllUsers" resultType="user">
+ 		select id, user_name userName, true_name trueName
+ 		from t_user
  	</select>
  	
  	<!-- 新增用户 -->
@@ -38,12 +44,14 @@
  		where id = #{id}
  	</update>
  	
+ 	<!-- 查询所有除去指定用户名的用户 -->
  	<select id="selMultiUsersExceptName" parameterType="string" resultType="user">
  		select id, user_name userName, user_pwd userPwd, true_name trueName
  		from t_user
- 		where user_name != #{oldName}
+ 		where user_name != #{userName}
  	</select>
  	
+ 	<!-- 根据id更新用户信息 -->
  	<update id="updUserById" parameterType="user">
  		update t_user
  		set user_name = #{userName},user_pwd = #{userPwd},true_name = #{trueName}

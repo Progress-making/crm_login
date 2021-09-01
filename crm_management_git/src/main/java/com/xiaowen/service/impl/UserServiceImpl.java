@@ -1,9 +1,6 @@
 package com.xiaowen.service.impl;
 
-import java.sql.Connection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -11,36 +8,28 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
-import com.xiaowen.dao.UserDao;
-import com.xiaowen.dao.impl.UserDaoImpl;
 import com.xiaowen.exception.LoginException;
 import com.xiaowen.exception.ParamException;
+import com.xiaowen.mapper.UserMapper;
 import com.xiaowen.pojo.User;
 import com.xiaowen.service.UserService;
 import com.xiaowen.util.AssertUtils;
 import com.xiaowen.util.BASE64Utils;
 import com.xiaowen.util.CookieUtils;
-import com.xiaowen.util.DBUtils;
 import com.xiaowen.util.MD5Util;
 import com.xiaowen.util.SqlSessionUtils;
 
 public class UserServiceImpl implements UserService {
 
-	private UserDao userDao = new UserDaoImpl();
 	@Override
 	public User login(String userName, String userPwd, HttpServletResponse resp) throws ParamException,LoginException {
 		// 后台非空 验证
 		AssertUtils.isTrue(StringUtils.isBlank(userName), "请输入用户名");
 		AssertUtils.isTrue(StringUtils.isBlank(userPwd), "请输入密码");
-//		Connection conn = DBUtils.getConnection();
-//		User user = userDao.selUserByUsernameAndPwd(conn, userName, MD5Util.md5Encrypt(userPwd));
-//		DBUtils.closeConn(conn);
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		Map<String, String> map = new HashMap<>();
-		map.put("userName", userName);
-		map.put("password", MD5Util.md5Encrypt(userPwd));
-		User user = session.selectOne("com.xiaowen.mapper.UserMapper.selUserByUsernameAndPwd", map);
-//		User user = userMapper.selUserByUsernameAndPwd(userName, MD5Util.md5Encrypt(userPwd));
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		User user = userMapper.selUserByUsernameAndPwd(userName, MD5Util.md5Encrypt(userPwd));
+		SqlSessionUtils.closeSqlSession();
 		AssertUtils.isLoginFail(user == null, "登录失败！用户不存在：用户名错误或密码错误！");
 		
 		/*
@@ -58,20 +47,16 @@ public class UserServiceImpl implements UserService {
 		AssertUtils.isTrue(StringUtils.isBlank(confirmPwd), "请输入确认密码");
 		AssertUtils.isTrue(!user.getUserPwd().equals(confirmPwd), "两次密码输入不一致");
 		
-//		Connection conn = DBUtils.getConnection();
-//		User userBean = userDao.selUserByUsername(conn, user.getUserName());
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		User userBean = session.selectOne("com.xiaowen.mapper.UserMapper.selUserByUsername", user.getUserName());
-		
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		User userBean = userMapper.selUserByUsername(user.getUserName());
 		AssertUtils.isTrue(userBean != null, "用户已存在");
 		// 对密码进行加密
 		user.setUserPwd(MD5Util.md5Encrypt(user.getUserPwd()));
-//		int result = userDao.insUserSingle(conn, user);
 		int result = 0;
-		result = session.insert("com.xiaowen.mapper.UserMapper.insUserSingle", user);
+		result = userMapper.insUserSingle(user);
 		session.commit(true);
-//		DBUtils.closeConn(conn);
-		SqlSessionUtils.closeSqlSession(session);
+		SqlSessionUtils.closeSqlSession();
 		return result;
 	}
 
@@ -79,12 +64,10 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String userName) throws ParamException {
 		// 参数为null验证
 		AssertUtils.isTrue(StringUtils.isBlank(userName), "用户名为必填项");
-//		Connection conn = DBUtils.getConnection();
-//		User user =  userDao.selUserByUsername(conn, userName);
-//		DBUtils.closeConn(conn);
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		User user = session.selectOne("com.xiaowen.mapper.UserMapper.selUserByUsername", userName);
-		SqlSessionUtils.closeSqlSession(session);
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		User user = userMapper.selUserByUsername(userName);
+		SqlSessionUtils.closeSqlSession();
 		return user;
 	}
 
@@ -92,12 +75,10 @@ public class UserServiceImpl implements UserService {
 	public User getUserByIdFromCookie(HttpServletRequest req) throws LoginException {
 		Cookie cookie = CookieUtils.getCookie(req, "userId");
 		AssertUtils.isLoginFail(cookie == null, "用户未登录，请先登录！");
-//		Connection conn = DBUtils.getConnection();
-//		User user =  userDao.selUserById(conn, Integer.parseInt(BASE64Utils.decryptBASE64(cookie.getValue())));
-//		DBUtils.closeConn(conn);
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		User user = session.selectOne("com.xiaowen.mapper.UserMapper.selUserById", Integer.parseInt(BASE64Utils.decryptBASE64(cookie.getValue())));
-		SqlSessionUtils.closeSqlSession(session);
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		User user = userMapper.selUserById(Integer.parseInt(BASE64Utils.decryptBASE64(cookie.getValue())));
+		SqlSessionUtils.closeSqlSession();
 		AssertUtils.isLoginFail(user == null, "用户不存在");
 		return user;
 	}
@@ -128,30 +109,27 @@ public class UserServiceImpl implements UserService {
 		User user = getUserByIdFromCookie(req);
 		checkUpdatePwdParams(user, oldPwd, newPwd, confirmPwd);
 		user.setUserPwd(MD5Util.md5Encrypt(newPwd));
-//		Connection conn = DBUtils.getConnection();
-//		int result = userDao.updUserPwd(conn, user);
-//		DBUtils.closeConn(conn);
 		int result = 0;
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		result = session.update("com.xiaowen.mapper.UserMapper.updUserPwd", user);
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		result = userMapper.updUserPwd(user);
 		session.commit();
-		SqlSessionUtils.closeSqlSession(session);
+		SqlSessionUtils.closeSqlSession();
 		return result;
 	}
 	
 	@Override
 	public int updateUserInfo(HttpServletRequest req, String userName, String trueName) throws ParamException {
-//		Connection conn = DBUtils.getConnection();
 		User user = getUserByIdFromCookie(req);
 		checkValidUser(user.getUserName(), userName, trueName);
 		user.setUserName(userName);
 		user.setTrueName(trueName);
-//		int result = userDao.updUserById(conn, user);
-//		DBUtils.closeConn(conn);
 		int result = 0;
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		result = session.update("com.xiaowen.mapper.UserMapper.updUserById", user);
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		result = userMapper.updUserById(user);
 		session.commit();
+		SqlSessionUtils.closeSqlSession();
 		return result;
 	}
 
@@ -172,11 +150,9 @@ public class UserServiceImpl implements UserService {
 		AssertUtils.isTrue(StringUtils.isBlank(trueName), "请填写真实姓名");
 		AssertUtils.isTrue(oldName == null, "系统漏洞！原用户名不可能为null!");
 		
-//		Connection conn = DBUtils.getConnection();
-//		List<User> list = userDao.selMultiUsersExceptName(conn, oldName);
-//		DBUtils.closeConn(conn);
 		SqlSession session = SqlSessionUtils.getSqlSession();
-		List<User> list = session.selectList("com.xiaowen.mapper.UserMapper.selMultiUsersExceptName", oldName);
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		List<User> list = userMapper.selMultiUsersExceptName(oldName);
 		if (list == null || list.size() < 1) {
 			return;
 		}
@@ -184,6 +160,14 @@ public class UserServiceImpl implements UserService {
 			System.out.println(user);
 			AssertUtils.isTrue(user.getUserName().equals(newName), "该用户名已存在，请重新输入");
 		}
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		SqlSession session = SqlSessionUtils.getSqlSession();
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		List<User> list = userMapper.selAllUsers();
+		return list;
 	}
 	
 

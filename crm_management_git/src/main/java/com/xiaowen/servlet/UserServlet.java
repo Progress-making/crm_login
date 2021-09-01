@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -394,7 +395,7 @@ public class UserServlet extends HttpServlet {
 	}
 	
 	/**
-	 * toErrorPage 转发请求 跳转至WEB-INF、views/error.jsp
+	 * toErrorPage 转发请求 跳转至WEB-INF/views/error.jsp
 	 * @Description
 	 * @author xiaowen
 	 * @date 2021年8月23日下午1:38:24
@@ -407,5 +408,22 @@ public class UserServlet extends HttpServlet {
 		req.setAttribute("msg", req.getParameter("msg"));
 		req.setAttribute("code", req.getParameter("code"));
 		req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+	}
+	
+	/**
+	 * toUserListPage 转发请求 跳转至WEB-INF/views/userList.jsp
+	 * 
+	 * @Description
+	 * @author xiaowen
+	 * @date 2021年9月1日下午2:52:33
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void toUserListPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<User> list = userService.getAllUsers();
+		req.setAttribute("userList", list);
+		req.getRequestDispatcher("/WEB-INF/views/userList.jsp").forward(req, resp);
 	}
 }

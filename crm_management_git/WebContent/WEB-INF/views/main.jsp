@@ -40,23 +40,27 @@
 		});
 		
 		// 安全退出 按钮被点击后 清除客户端用户的cookie信息，并跳转至首页面
-		$("button:eq(2)").click(function(){
+		$("button:eq(3)").click(function(){
 			$.cookie("userId", null, {expires : -1, path : "/"});
 			// 直接退回首页 默认是/index.jsp
 			window.location.href = "${pageContext.request.contextPath}/index.jsp";
 		});
 		
-		$("button:eq(1)").click(function(){
+		$("button:eq(2)").click(function(){
 			// 注意：a标签中的href和window.location.href都是重定向，都不能访问WEB-INF下的页面
 			// 可通过指定action在Servlet中进行转发的方式解决
 			$("#iframe_1").attr("src", "updatePwd.do");
 			//window.location.href = "updatePwd.do";
 		});
 		
-		$("button:eq(0)").click(function(){
+		$("button:eq(1)").click(function(){
 			$("#iframe_1").attr("src", "toEditPage.do");
 			//$(window.frames["iframe_1"]).attr("src", "toEditPage.do");
 			//window.location.href = "toEditPage.do";
+		});
+		
+		$("button:eq(0)").click(function(){
+			$("#iframe_1").attr("src", "toUserListPage.do");
 		});
 	});
 </script>
@@ -96,11 +100,12 @@
 	<div id="div_top"><strong>欢迎：</strong><span></span></div>
 	<div id="div_mid">
 		<ul>
+			<li><button>查看所有用户</button></li>
 			<li><button>编辑资料</button></li>
 			<li><button>修改密码</button></li>
 			<li><button>安全退出</button></li>
 		</ul>
-		<iframe id="iframe_1" name="ifram_show" frameborder="1"  title="inner page" scrolling="no" ></iframe>
+		<iframe id="iframe_1" name="ifram_show" frameborder="1"  title="inner page" scrolling="no" src="toUserListPage.do"></iframe>
 	</div>
 	
 </body>
