@@ -65,6 +65,26 @@
 				<artifactId>mybatis</artifactId>
 				<version>3.2.7</version>
 			</dependency>
+			
+			<!-- spring与mybatis整合所需依赖 -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>4.1.6.RELEASE</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+			
+			<!-- springmvc依赖 -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>4.1.6.RELEASE</version>
+			</dependency>
 		</dependencies>
 
 	</dependencyManagement>

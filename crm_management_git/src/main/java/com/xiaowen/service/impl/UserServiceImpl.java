@@ -6,7 +6,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.xiaowen.exception.LoginException;
 import com.xiaowen.exception.ParamException;
@@ -17,19 +18,20 @@ import com.xiaowen.util.AssertUtils;
 import com.xiaowen.util.BASE64Utils;
 import com.xiaowen.util.CookieUtils;
 import com.xiaowen.util.MD5Util;
-import com.xiaowen.util.SqlSessionUtils;
 
+@Service
 public class UserServiceImpl implements UserService {
 
+	@Autowired
+	private UserMapper userMapper;
+	
 	@Override
 	public User login(String userName, String userPwd, HttpServletResponse resp) throws ParamException,LoginException {
 		// 后台非空 验证
 		AssertUtils.isTrue(StringUtils.isBlank(userName), "请输入用户名");
 		AssertUtils.isTrue(StringUtils.isBlank(userPwd), "请输入密码");
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
+		
 		User user = userMapper.selUserByUsernameAndPwd(userName, MD5Util.md5Encrypt(userPwd));
-		SqlSessionUtils.closeSqlSession();
 		AssertUtils.isLoginFail(user == null, "登录失败！用户不存在：用户名错误或密码错误！");
 		
 		/*
@@ -47,27 +49,18 @@ public class UserServiceImpl implements UserService {
 		AssertUtils.isTrue(StringUtils.isBlank(confirmPwd), "请输入确认密码");
 		AssertUtils.isTrue(!user.getUserPwd().equals(confirmPwd), "两次密码输入不一致");
 		
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
 		User userBean = userMapper.selUserByUsername(user.getUserName());
 		AssertUtils.isTrue(userBean != null, "用户已存在");
 		// 对密码进行加密
 		user.setUserPwd(MD5Util.md5Encrypt(user.getUserPwd()));
-		int result = 0;
-		result = userMapper.insUserSingle(user);
-		session.commit(true);
-		SqlSessionUtils.closeSqlSession();
-		return result;
+		return userMapper.insUserSingle(user);
 	}
 
 	@Override
 	public User getUserByUsername(String userName) throws ParamException {
 		// 参数为null验证
 		AssertUtils.isTrue(StringUtils.isBlank(userName), "用户名为必填项");
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
 		User user = userMapper.selUserByUsername(userName);
-		SqlSessionUtils.closeSqlSession();
 		return user;
 	}
 
@@ -75,10 +68,7 @@ public class UserServiceImpl implements UserService {
 	public User getUserByIdFromCookie(HttpServletRequest req) throws LoginException {
 		Cookie cookie = CookieUtils.getCookie(req, "userId");
 		AssertUtils.isLoginFail(cookie == null, "用户未登录，请先登录！");
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
 		User user = userMapper.selUserById(Integer.parseInt(BASE64Utils.decryptBASE64(cookie.getValue())));
-		SqlSessionUtils.closeSqlSession();
 		AssertUtils.isLoginFail(user == null, "用户不存在");
 		return user;
 	}
@@ -109,13 +99,8 @@ public class UserServiceImpl implements UserService {
 		User user = getUserByIdFromCookie(req);
 		checkUpdatePwdParams(user, oldPwd, newPwd, confirmPwd);
 		user.setUserPwd(MD5Util.md5Encrypt(newPwd));
-		int result = 0;
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
-		result = userMapper.updUserPwd(user);
-		session.commit();
-		SqlSessionUtils.closeSqlSession();
-		return result;
+		
+		return userMapper.updUserPwd(user);
 	}
 	
 	@Override
@@ -124,13 +109,8 @@ public class UserServiceImpl implements UserService {
 		checkValidUser(user.getUserName(), userName, trueName);
 		user.setUserName(userName);
 		user.setTrueName(trueName);
-		int result = 0;
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
-		result = userMapper.updUserById(user);
-		session.commit();
-		SqlSessionUtils.closeSqlSession();
-		return result;
+		
+		return userMapper.updUserById(user);
 	}
 
 	/**
@@ -150,8 +130,6 @@ public class UserServiceImpl implements UserService {
 		AssertUtils.isTrue(StringUtils.isBlank(trueName), "请填写真实姓名");
 		AssertUtils.isTrue(oldName == null, "系统漏洞！原用户名不可能为null!");
 		
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
 		List<User> list = userMapper.selMultiUsersExceptName(oldName);
 		if (list == null || list.size() < 1) {
 			return;
@@ -164,8 +142,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAllUsers() {
-		SqlSession session = SqlSessionUtils.getSqlSession();
-		UserMapper userMapper = session.getMapper(UserMapper.class);
 		List<User> list = userMapper.selAllUsers();
 		return list;
 	}

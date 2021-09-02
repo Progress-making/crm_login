@@ -1,8 +1,5 @@
 package crm_management_git;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,10 +15,7 @@ public class UserServiceTest {
 	public void testLogin() {
 		String userName = "大姚";
 		String userPwd = "ym123456789";
-		Map< String, String> map = new HashMap<>();
-		map.put("userName", userName);
-		map.put("password", MD5Util.md5Encrypt(userPwd));
-		User user = userService.login(userName, userPwd, null);
+		User user = userService.login(userName, MD5Util.md5Encrypt(userPwd), null);
 		System.out.println(user);
 		Assert.assertNotNull("登录失败", user);
 	}

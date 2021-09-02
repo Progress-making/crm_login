@@ -3,6 +3,18 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
+	<!-- 配置全局参数contextConfigLocation，配置其路径为classpath：applicationContext.xml -->
+	<context-param>
+	 	<param-name>contextConfigLocation</param-name>
+	 	<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	<!-- 配置一个spring的核心监听器 ContextLoaderListener。它用于在web应用启动时就加载ioc容器。
+	通过读取在contextConfigLocation中定义的xml文件，自动装配ApplicationContext的配置信息，并产生
+	WebApplicationContext对象，然后将这个对象放置在ServletContext的属性里，这样我们只要得到
+	Servlet就可以得到WebApplicationContext对象，并利用这个对象访问spring容器管理的bean。-->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>

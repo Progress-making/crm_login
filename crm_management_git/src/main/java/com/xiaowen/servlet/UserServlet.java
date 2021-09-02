@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiaowen.base.ResultInfo;
 import com.xiaowen.exception.LoginException;
@@ -27,7 +30,7 @@ import com.xiaowen.service.impl.UserServiceImpl;
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private UserService userService = new UserServiceImpl();
+	private UserService userService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,6 +38,16 @@ public class UserServlet extends HttpServlet {
     public UserServlet() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    @Override
+    public void init() throws ServletException {
+//    	ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+    	// WebApplicationContext是ApplicationContext的一个子类，专门用于读取web的配置文件。
+    	// WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext())会读取web.xml下名为
+    	// contextConfigLocation的全局参数并去加载该路径下的配置文件
+    	ApplicationContext ac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+    	userService = ac.getBean("userServiceImpl", UserServiceImpl.class);
     }
 
 	/**
