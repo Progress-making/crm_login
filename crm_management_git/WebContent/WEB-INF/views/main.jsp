@@ -12,7 +12,7 @@
 <script type="text/javascript">
 	$(function(){
 		$.ajax({
-			url:"${pageContext.request.contextPath }/queryByCookie.do",
+			url:"${pageContext.request.contextPath }/queryByCookie",
 			type:"post",
 			async:true,
 			dataType :"json",
@@ -23,7 +23,7 @@
 					return;
 				}
 				if (data.code == 500) {
-					window.location.href = "${pageContext.request.contextPath }/toErrorPage.do?msg=" + data.msg + "&code=" + data.code;
+					window.location.href = "${pageContext.request.contextPath }/toErrorPage?msg=" + data.msg + "&code=" + data.code;
 					return;
 				}
 				$("span").html(data.result.userName);
@@ -49,18 +49,18 @@
 		$("button:eq(2)").click(function(){
 			// 注意：a标签中的href和window.location.href都是重定向，都不能访问WEB-INF下的页面
 			// 可通过指定action在Servlet中进行转发的方式解决
-			$("#iframe_1").attr("src", "updatePwd.do");
+			$("#iframe_1").attr("src", "toUpdatePwdPage");
 			//window.location.href = "updatePwd.do";
 		});
 		
 		$("button:eq(1)").click(function(){
-			$("#iframe_1").attr("src", "toEditPage.do");
+			$("#iframe_1").attr("src", "toEditPage");
 			//$(window.frames["iframe_1"]).attr("src", "toEditPage.do");
 			//window.location.href = "toEditPage.do";
 		});
 		
 		$("button:eq(0)").click(function(){
-			$("#iframe_1").attr("src", "toUserListPage.do");
+			$("#iframe_1").attr("src", "toUserListPage");
 		});
 	});
 </script>
@@ -105,7 +105,7 @@
 			<li><button>修改密码</button></li>
 			<li><button>安全退出</button></li>
 		</ul>
-		<iframe id="iframe_1" name="ifram_show" frameborder="1"  title="inner page" scrolling="no" src="toUserListPage.do"></iframe>
+		<iframe id="iframe_1" name="ifram_show" frameborder="1"  title="inner page" scrolling="no" src="toUserListPage"></iframe>
 	</div>
 	
 </body>

@@ -93,7 +93,7 @@
 <body>
 	<div id="null_form_tip"></div>
 	<div>
-		<form action="login.do" method="post">
+		<form action="login" method="post">
 			<table>
 				<thead>
 					<tr>

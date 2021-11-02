@@ -13,7 +13,7 @@
 		
 		$("input[type='button']").click(function(){
 			$.ajax({
-				url:"${pageContext.request.contextPath }/executeUpdatePwd.do",
+				url:"${pageContext.request.contextPath }/updatePwd",
 				data:$("#form_update_pwd").serialize(),
 					/* oldPwd:$("input[type='password']:eq(0)").val(),
 					newPwd:$("input[type='password']:eq(1)").val(),
@@ -28,7 +28,7 @@
 						$.cookie("userId", null, {expires:-1, path:"/"});
 						window.top.location.href = "${pageContext.request.contextPath }/index.jsp";
 					} else {
-						window.top.location.href = "${pageContext.request.contextPath }/toErrorPage.do?msg=" + data.msg + "&code=" + data.code;
+						window.top.location.href = "${pageContext.request.contextPath }/toErrorPage?msg=" + data.msg + "&code=" + data.code;
 					}
 					
 				}

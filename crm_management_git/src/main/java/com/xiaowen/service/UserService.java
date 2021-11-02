@@ -23,7 +23,7 @@ public interface UserService {
 	 * @return
 	 * @throws LoginException
 	 */
-	public User login(String userName, String userPwd, HttpServletResponse resp) throws LoginException;
+	public User login(String userName, String userPwd, HttpServletResponse resp) throws ParamException, LoginException;
 	
 	public int register(User user, String confirmPwd) throws ParamException;
 	

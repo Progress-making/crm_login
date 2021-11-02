@@ -13,7 +13,7 @@
 	$(function(){
 		$("input[type='button']").click(function(){
 			$.ajax({
-				url:"${pageContext.request.contextPath }/edit.do",
+				url:"${pageContext.request.contextPath }/edit",
 				data:$("#form_edit_user").serialize(),
 				type:"post",
 				async:true,
@@ -21,7 +21,7 @@
 				success:function(data){
 					alert(data.msg);
 					if (data.code == 200) {
-						window.top.location.href = "${pageContext.request.contextPath }/main.do";
+						window.top.location.href = "${pageContext.request.contextPath }/main";
 					}
 				}
 			});

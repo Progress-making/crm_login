@@ -121,7 +121,7 @@
 </script>
 </head>
 <body>
-	<form action="add.do" method="post" >
+	<form action="register" method="post" >
 		<table>
 			<thead><tr><td><strong>Register</strong></td><td align="right"><span>已有账号？</span><a href="index.jsp">点此登录</a></td></tr></thead>
 			<tbody>
